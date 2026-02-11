@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accès Secret</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6f0; /* rose clair */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+            overflow: hidden;
+        }
+          h1 {
+            color: #ff66b2;
+            font-size: 3em;
+            z-index: 10;
+        }
+        input {
+            padding: 10px;
+            font-size: 1em;
+            
+            margin-top: 20px;
+            border-radius: 5px;
+            border: 1px solid #ff66b2;
+        }
+         button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin-left: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #ff66b2;
+            color: white;
+            cursor: pointer;
+        }
+         button:hover {
+            background-color: #ff3399;
+        }
+        .heart {
+            position: absolute;
+            top: 0;                 /* commencent en haut */
+            font-size: 20px;        /* petite taille mignonne */
+            color: #ff66b2;
+            animation: float 4s linear infinite;
+            user-select: none;
+            z-index: 9999;          /* au-dessus de tout */
+            pointer-events: none;   /* clics passent à travers */
+        }
+
+
+         @keyframes float {
+             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+             100% { transform: translateY(30px) rotate(360deg); opacity: 0; }
+        }
+        /* Enveloppe */
+        .envelope {
+             width: 500px;
+             height: 350px;
+             background-color: #ffb6c1;
+             position: relative;
+             cursor: pointer;
+             border-radius: 15px;
+             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+             transition: transform 0.5s;
+             margin: 20px auto;
+        }
+         .envelope:hover {
+             transform: scale(1.05);
+        }
+        .envelope::before {
+             content: "";
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 0;
+             height: 0;
+             border-left: 250px solid transparent; /* moitié de la largeur */
+             border-right: 250px solid transparent;
+             border-bottom: 175px solid #ff69b4;   /* moitié de la hauteur */
+             border-radius: 0 0 15px 15px;
+             transition: transform 0.8s;
+             transform-origin: top center;
+        }
+        .letter {
+             position: absolute;
+             top: 50px;
+             left: 20px;
+             width: 90%;      /* plus flexible */
+             height: 80%;     /* plus flexible */
+             max-width: 500px;
+             max-height: 350px;
+             background: #fff8f0;
+             border-radius: 15px;
+             padding: 15px;
+             font-size: 0.9em;
+             color: #ff66b2;
+             line-height: 1.5;
+             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+             display: none;
+             overflow-y: auto; /* permet de scroller si trop long */
+             word-break: break-word; /* texte ne dépasse pas */
+}
+    </style>
+</head>
+<body>
+ <div id="loginDiv">
+        <h1>Entrez le mot de passe secret 💖</h1>
+        <input type="text" id="passwordInput" placeholder="Tape ici...">
+        <button onclick="checkPassword()">Valider</button>
+    </div>
+
+    <div id="messageDiv" style="display:none;">
+       <div class="envelope" onclick="openEnvelope(this)">
+         <div class="letter">
+        coucou j veux m'excuser de ma facon pour tous les moments ou j t'ai lachée j etais vrm pas bien 
+        javais vrm besoi de m'eloigner de tt le monde j voulais me concentrer sur moi j avais plusieurs 
+        trucs a gerer j avais mon esprit partout j me suis pas eloignée parce que j me suis lassée de toi
+        deja t la personne que j plus aimé que j'apprécie beaucoup j regretterai jamais de t avoir rencontré
+        et sache que j te lacherai jamais et si y aura un truc j serai la première a etre la pour toi promis...
+         <h1 > MANEL TA SOEUR D AMOUR </h1> 
+         </div>
+       </div> 
+    </div>
+
+    <!-- Son doux -->
+    <audio id="loveSound" src="douce.mp3" preload="auto"></audio>
+
+    <script>
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value.trim().toLowerCase();
+            const correctPassword = "manel la meilleure des meilleurs"; // mot de passe exact
+              if(input === correctPassword) {
+                document.getElementById('loginDiv').style.display = 'none';
+                document.getElementById('messageDiv').style.display = 'block';
+                
+                // Jouer le son
+                document.getElementById('loveSound').play();
+
+                startHearts();
+            } else {
+                alert("Orh tu me decois répète😢");
+            }
+        }
+        function openEnvelope(el) {
+            const letter = el.querySelector('.letter');
+            letter.style.display = 'block'; // montre la lettre
+            el.classList.add('opened');     // fait tourner le rabat
+        }
+        function createHearts() {
+             for(let i=0; i<5; i++){       
+                 let heart = document.createElement('div');
+                 heart.classList.add('heart');
+                 heart.innerText = '💖';
+                 heart.style.left = Math.random() * window.innerWidth + 'px';
+                 heart.style.fontSize = (15 + Math.random() * 10) + 'px';
+                 heart.style.animationDuration = (3 + Math.random() * 2) + 's';
+                document.body.appendChild(heart);
+
+                 setTimeout(() => heart.remove(), 5000); // disparaissent doucement
+             }
+        }
+
+         // Lance le cœur une seule fois
+         function startHearts() {
+             if (!heartInterval) { // pour éviter plusieurs intervalles
+                 createHearts();
+                 heartInterval = setInterval(createHearts, 1000);
+             }
+        }
+    </script>
+
+</body>
+</html>
